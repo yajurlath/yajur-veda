@@ -367,11 +367,18 @@ nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(
       if(!cs.length) return;
       var dn=cs.filter(function(c){return read.has(c.id);}).length;
       var d=document.createElement("div");d.className="mod";d.setAttribute("data-mid",m.id);
-      var rows="",lastCh=null;
+      var rows="",groups=[],gi={};
       cs.forEach(function(c){
-        if(c.ch&&c.ch!==lastCh){rows+='<div class="chap">'+esc(c.ch)+'</div>';lastCh=c.ch;}
-        var r=read.has(c.id);
-        rows+='<div class="row'+(r?' read':'')+'" data-id="'+c.id+'"><div class="dot'+(r?' read':'')+'" data-dot="'+c.id+'">'+(r?check:"")+'</div><b>'+esc(c.title)+'</b></div>';
+        var key=c.ch||"";
+        if(!(key in gi)){gi[key]=groups.length;groups.push({ch:c.ch||null,cards:[]});}
+        groups[gi[key]].cards.push(c);
+      });
+      groups.forEach(function(g){
+        if(g.ch) rows+='<div class="chap">'+esc(g.ch)+'</div>';
+        g.cards.forEach(function(c){
+          var r=read.has(c.id);
+          rows+='<div class="row'+(r?' read':'')+'" data-id="'+c.id+'"><div class="dot'+(r?' read':'')+'" data-dot="'+c.id+'">'+(r?check:"")+'</div><b>'+esc(c.title)+'</b></div>';
+        });
       });
       d.innerHTML='<div class="mod-h"><div class="mod-n">'+esc(m.num)+'</div><div class="mod-t"><b>'+esc(m.title)+'</b><span>'+esc(m.sub)+'</span></div><div class="mod-pct">'+dn+'/'+cs.length+'</div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mbar"><i style="width:'+Math.round(dn/cs.length*100)+'%"></i></div><div class="mod-list">'+rows+'</div>';
       d.querySelector(".mod-h").onclick=function(){d.classList.toggle("open");};
