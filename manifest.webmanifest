@@ -1,0 +1,14 @@
+{
+  "name": "The Yajur Veda — a daily reading",
+  "short_name": "Yajur Veda",
+  "description": "The Yajur Veda in 3-minute daily reads: origins, stories, philosophy, and what to do with it.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f1e7",
+  "theme_color": "#b8742a",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
